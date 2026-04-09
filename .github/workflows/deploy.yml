@@ -1,0 +1,53 @@
+name: Build & Deploy Site
+
+on:
+  # Run every Monday at noon UTC — adjust to taste
+  schedule:
+    - cron: "0 12 * * 1"
+
+  # Also allow manual trigger from the GitHub Actions UI
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to push the rebuilt site back to the repo
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3. Install dependencies
+      - name: Install Python deps
+        run: pip install google-api-python-client google-auth
+
+      # 4. Run the build script
+      #    Secrets are passed as environment variables.
+      #    Set these in your repo: Settings → Secrets → Actions
+      - name: Build site
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+        run: python scripts/build_site.py
+
+      # 5. Commit the rebuilt index.html + images back to the repo
+      #    GitHub Pages will then auto-deploy from the main branch
+      - name: Commit rebuilt site
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html images/
+          # Only commit if something actually changed
+          git diff --cached --quiet || git commit -m "chore: rebuild site [skip ci]"
+          git push
