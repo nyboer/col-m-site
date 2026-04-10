@@ -7,27 +7,28 @@ rebuilds index.html from the template.
 
 import re
 import shutil
-import urllib.error
 import urllib.request
-from datetime import datetime
+import urllib.error
 from pathlib import Path
+from datetime import datetime
+
+from PIL import Image
+
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-REPO_ROOT = Path(__file__).parent.parent
+REPO_ROOT  = Path(__file__).parent.parent
 IMAGES_DIR = REPO_ROOT / "images"
-TEMPLATE = REPO_ROOT / "template" / "index.template.html"
-OUTPUT = REPO_ROOT / "index.html"
+TEMPLATE   = REPO_ROOT / "template" / "index.template.html"
+OUTPUT     = REPO_ROOT / "index.html"
 FILES_LIST = REPO_ROOT / "files.txt"
 
 
 # ── Google Drive download ─────────────────────────────────────────────────────
 
-
 def file_id_from_url(url):
     """Extract a Drive file ID from a share URL, or return the string as-is."""
     m = re.search(r"/d/([a-zA-Z0-9_-]+)", url)
-    print(f"✗  ID: {m.group(1)}")
     return m.group(1) if m else url.strip()
 
 
@@ -37,7 +38,7 @@ def drive_download_url(file_id):
 
 def download_file(file_id, dest_path):
     url = drive_download_url(file_id)
-    print(f"  Downloading {file_id} {dest_path.name} ...", end=" ", flush=True)
+    print(f"  Downloading {dest_path.name} ...", end=" ", flush=True)
     try:
         urllib.request.urlretrieve(url, dest_path)
         print("✓")
@@ -46,8 +47,22 @@ def download_file(file_id, dest_path):
         raise
 
 
-# ── files.txt parser ──────────────────────────────────────────────────────────
+def process_image(src_path, dest_path, width=1200, quality=80):
+    """Resize to `width` px wide (never upscale), save as JPEG at `quality`."""
+    with Image.open(src_path) as img:
+        # Convert palette or RGBA modes so JPEG save doesn't fail
+        if img.mode in ("P", "RGBA"):
+            img = img.convert("RGB")
+        # Only downscale — never upscale
+        if img.width > width:
+            height = int(img.height * width / img.width)
+            img = img.resize((width, height), Image.LANCZOS)
+        img.save(dest_path, "JPEG", quality=quality, optimize=True)
+    src_path.unlink()  # remove the raw download
+    print(f"    → resized to {width}px wide, saved as JPEG q{quality}")
 
+
+# ── files.txt parser ──────────────────────────────────────────────────────────
 
 def parse_files_list(text):
     """
@@ -74,7 +89,6 @@ def parse_files_list(text):
 
 # ── Event .txt parser ─────────────────────────────────────────────────────────
 
-
 def parse_event_txt(text, image_filename):
     """
     Parse a single event .txt file.
@@ -97,9 +111,9 @@ def parse_event_txt(text, image_filename):
     paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text.strip())]
 
     event = {
-        "title": paragraphs[0] if len(paragraphs) > 0 else "",
-        "date": paragraphs[1] if len(paragraphs) > 1 else "",
-        "description": paragraphs[2] if len(paragraphs) > 2 else "",
+        "title":          paragraphs[0] if len(paragraphs) > 0 else "",
+        "date":           paragraphs[1] if len(paragraphs) > 1 else "",
+        "description":    paragraphs[2] if len(paragraphs) > 2 else "",
         "image_filename": image_filename,
     }
 
@@ -107,7 +121,6 @@ def parse_event_txt(text, image_filename):
 
 
 # ── HTML builder ──────────────────────────────────────────────────────────────
-
 
 def build_event_html(event):
     img_filename = event.get("image_filename", "")
@@ -121,7 +134,7 @@ def build_event_html(event):
     desc_html = ""
     if event.get("description"):
         lines = event["description"].splitlines()
-        desc_html = '<p class="description">' + "<br>".join(lines) + "</p>"
+        desc_html = "<p class=\"description\">" + "<br>".join(lines) + "</p>"
 
     return f"""
     <article class="event">
@@ -139,13 +152,14 @@ def build_event_html(event):
 def render_html(template_text, events):
     events_html = "\n".join(build_event_html(e) for e in events)
     updated = datetime.now().strftime("%B %d, %Y")
-    return template_text.replace("{{ EVENTS }}", events_html).replace(
-        "{{ UPDATED }}", updated
+    return (
+        template_text
+        .replace("{{ EVENTS }}", events_html)
+        .replace("{{ UPDATED }}", updated)
     )
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
-
 
 def main():
     print("🎵 col-m.us builder starting...")
@@ -163,8 +177,8 @@ def main():
 
     # Group entries: pair each .txt with the next image file
     # Build a lookup: txt filename → image filename (from the adjacent image entry)
-    txt_files = []  # [(local_name, file_id)]
-    img_files = []  # [(local_name, file_id)]
+    txt_files  = []   # [(local_name, file_id)]
+    img_files  = []   # [(local_name, file_id)]
 
     for filename, file_id in entries:
         if filename.endswith(".txt"):
@@ -172,9 +186,13 @@ def main():
         else:
             img_files.append((filename, file_id))
 
-    # Download all images
+    # Download and process all images
     for img_name, file_id in img_files:
-        download_file(file_id, IMAGES_DIR / img_name)
+        raw_path = IMAGES_DIR / img_name
+        download_file(file_id, raw_path)
+        # Always output as .jpg regardless of original extension
+        jpg_name = Path(img_name).stem + ".jpg"
+        process_image(raw_path, IMAGES_DIR / jpg_name)
 
     # Download all .txt files, parse each one
     # Match txt to image by position (first txt → first image, etc.)
@@ -185,8 +203,8 @@ def main():
         txt_content = tmp.read_text(encoding="utf-8")
         tmp.unlink()
 
-        # Find the corresponding image filename by position
-        img_filename = img_files[i][0] if i < len(img_files) else ""
+        # Use the normalised .jpg filename
+        img_filename = Path(img_files[i][0]).stem + ".jpg" if i < len(img_files) else ""
         event = parse_event_txt(txt_content, img_filename)
         events.append(event)
         print(f"  Parsed: {event['title']}")

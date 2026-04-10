@@ -1,1 +1,2 @@
 # No external dependencies — uses Python stdlib only
+Pillow>=10.0.0
