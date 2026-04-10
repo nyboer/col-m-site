@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 col-m.us site builder
-Downloads public Google Drive files listed in files.txt, rebuilds index.html
+Reads files.txt, downloads event .txt files + images from public Google Drive,
+rebuilds index.html from the template.
 """
 
 import re
@@ -23,12 +24,18 @@ FILES_LIST = REPO_ROOT / "files.txt"
 
 # ── Google Drive download ─────────────────────────────────────────────────────
 
-def drive_url(file_id):
+def file_id_from_url(url):
+    """Extract a Drive file ID from a share URL, or return the string as-is."""
+    m = re.search(r"/d/([a-zA-Z0-9_-]+)", url)
+    return m.group(1) if m else url.strip()
+
+
+def drive_download_url(file_id):
     return f"https://drive.google.com/uc?export=download&id={file_id}"
 
 
 def download_file(file_id, dest_path):
-    url = drive_url(file_id)
+    url = drive_download_url(file_id)
     print(f"  Downloading {dest_path.name} ...", end=" ", flush=True)
     try:
         urllib.request.urlretrieve(url, dest_path)
@@ -45,6 +52,7 @@ def parse_files_list(text):
     Parse files.txt — one entry per line:
         filename    DRIVE_FILE_ID
     Blank lines and lines starting with # are ignored.
+    Order is preserved; that's the display order of events.
     """
     entries = []
     for line in text.splitlines():
@@ -59,83 +67,54 @@ def parse_files_list(text):
     return entries
 
 
-# ── Markdown parser ───────────────────────────────────────────────────────────
+# ── Event .txt parser ─────────────────────────────────────────────────────────
 
-def parse_events_md(md_text):
+def parse_event_txt(text, image_filename):
     """
-    Parse events.md into a list of event dicts.
+    Parse a single event .txt file.
 
-    Format per event (separate blocks with ---):
+    Format — four sections separated by blank lines:
 
-        ## Month YYYY — Venue Name
-        **Date:** Saturday, January 18, 2025
-        **Artists:** Artist One, Artist Two
-        **Doors:** 8pm | **Show:** 9pm | **Cover:** $10
-        **Poster:** poster-jan-2025.jpg
+        Title of the Event
 
-        Optional freeform description paragraph.
+        Date string
+
+        Description line one.
+        Description line two.
+
+        https://drive.google.com/file/d/FILE_ID/view
+
+    The image link in the .txt is ignored if an image filename is already
+    known from files.txt (which takes precedence).
     """
-    events = []
-    blocks = re.split(r"\n---+\n", md_text.strip())
+    # Split into paragraphs on blank lines
+    paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text.strip())]
 
-    for block in blocks:
-        block = block.strip()
-        if not block:
-            continue
+    event = {
+        "title":          paragraphs[0] if len(paragraphs) > 0 else "",
+        "date":           paragraphs[1] if len(paragraphs) > 1 else "",
+        "description":    paragraphs[2] if len(paragraphs) > 2 else "",
+        "image_filename": image_filename,
+    }
 
-        event = {}
-
-        title_match = re.search(r"^##\s+(.+)$", block, re.MULTILINE)
-        event["title"] = title_match.group(1).strip() if title_match else ""
-        if not event["title"]:
-            continue
-
-        for key, field in [
-            ("date",    "Date"),
-            ("artists", "Artists"),
-            ("details", "Doors"),
-            ("poster",  "Poster"),
-        ]:
-            m = re.search(rf"\*\*{field}:\*\*\s*(.+)", block)
-            event[key] = m.group(1).strip() if m else ""
-
-        desc_lines = []
-        for line in block.splitlines():
-            line = line.strip()
-            if not line or line.startswith("#") or re.match(r"\*\*\w[\w\s]*:\*\*", line):
-                continue
-            desc_lines.append(line)
-        event["description"] = " ".join(desc_lines)
-
-        events.append(event)
-
-    return events
+    return event
 
 
 # ── HTML builder ──────────────────────────────────────────────────────────────
 
 def build_event_html(event):
-    poster_file = event.get("poster", "").strip()
+    img_filename = event.get("image_filename", "")
     img_tag = (
-        f'<img src="images/{poster_file}" alt="{event["title"]} poster" class="poster">'
-        if poster_file
+        f'<img src="images/{img_filename}" alt="{event["title"]} poster" class="poster">'
+        if img_filename
         else '<div class="poster poster--placeholder"></div>'
     )
 
-    artists_html = ""
-    if event.get("artists"):
-        artists = [a.strip() for a in event["artists"].split(",")]
-        artists_html = (
-            '<ul class="artists">'
-            + "".join(f"<li>{a}</li>" for a in artists)
-            + "</ul>"
-        )
-
-    desc_html = (
-        f'<p class="description">{event["description"]}</p>'
-        if event.get("description")
-        else ""
-    )
+    # Preserve line breaks in description
+    desc_html = ""
+    if event.get("description"):
+        lines = event["description"].splitlines()
+        desc_html = "<p class=\"description\">" + "<br>".join(lines) + "</p>"
 
     return f"""
     <article class="event">
@@ -144,9 +123,7 @@ def build_event_html(event):
       </div>
       <div class="event__info">
         <h2 class="event__title">{event["title"]}</h2>
-        <p class="event__date">{event.get("date", "")}</p>
-        {artists_html}
-        <p class="event__details">{event.get("details", "")}</p>
+        <p class="event__date">{event["date"]}</p>
         {desc_html}
       </div>
     </article>"""
@@ -168,10 +145,7 @@ def main():
     print("🎵 col-m.us builder starting...")
 
     if not FILES_LIST.exists():
-        raise FileNotFoundError(
-            "files.txt not found in repo root. "
-            "Add one listing your Drive file IDs."
-        )
+        raise FileNotFoundError("files.txt not found in repo root.")
 
     entries = parse_files_list(FILES_LIST.read_text())
     print(f"Found {len(entries)} file(s) in files.txt.")
@@ -181,30 +155,42 @@ def main():
         shutil.rmtree(IMAGES_DIR)
     IMAGES_DIR.mkdir()
 
-    events_md_text = None
+    # Group entries: pair each .txt with the next image file
+    # Build a lookup: txt filename → image filename (from the adjacent image entry)
+    txt_files  = []   # [(local_name, file_id)]
+    img_files  = []   # [(local_name, file_id)]
 
     for filename, file_id in entries:
-        if filename.endswith(".md"):
-            tmp = REPO_ROOT / filename
-            download_file(file_id, tmp)
-            events_md_text = tmp.read_text(encoding="utf-8")
-            tmp.unlink()
+        if filename.endswith(".txt"):
+            txt_files.append((filename, file_id))
         else:
-            download_file(file_id, IMAGES_DIR / filename)
+            img_files.append((filename, file_id))
 
-    if not events_md_text:
-        raise ValueError(
-            "No .md file found in files.txt. "
-            "Make sure events.md is listed there."
-        )
+    # Download all images
+    for img_name, file_id in img_files:
+        download_file(file_id, IMAGES_DIR / img_name)
 
-    events = parse_events_md(events_md_text)
-    print(f"Parsed {len(events)} event(s).")
+    # Download all .txt files, parse each one
+    # Match txt to image by position (first txt → first image, etc.)
+    events = []
+    for i, (txt_name, file_id) in enumerate(txt_files):
+        tmp = REPO_ROOT / txt_name
+        download_file(file_id, tmp)
+        txt_content = tmp.read_text(encoding="utf-8")
+        tmp.unlink()
+
+        # Find the corresponding image filename by position
+        img_filename = img_files[i][0] if i < len(img_files) else ""
+        event = parse_event_txt(txt_content, img_filename)
+        events.append(event)
+        print(f"  Parsed: {event['title']}")
+
+    print(f"Total: {len(events)} event(s).")
 
     template_text = TEMPLATE.read_text(encoding="utf-8")
     html = render_html(template_text, events)
     OUTPUT.write_text(html, encoding="utf-8")
-    print(f"✅ Built index.html with {len(events)} event(s).")
+    print(f"✅ Built index.html.")
 
 
 if __name__ == "__main__":

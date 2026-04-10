@@ -1,13 +1,24 @@
 # col-m Drive files
 # Format: filename    GOOGLE_DRIVE_FILE_ID
 #
-# To get a file's ID: right-click it in Drive → "Get link"
-# The ID is the long string in the URL:
+# To get a file ID: right-click the file in Drive → "Get link"
+# The ID is the long string between /d/ and /view in the URL:
 #   https://drive.google.com/file/d/THIS_PART_HERE/view
 #
-# events.md must be listed first.
-# Add a new poster line each month.
+# List events in the order you want them on the page (most recent first).
+# Each event needs one .txt file and one image file.
 
-events.md               REPLACE_WITH_YOUR_FILE_ID
-poster-apr-2025.jpg     REPLACE_WITH_YOUR_FILE_ID
-poster-mar-2025.jpg     REPLACE_WITH_YOUR_FILE_ID
+apr-2026.txt            https://drive.google.com/open?id=1Br2EPL9fm7sp4qCC1ONlLlyW-aws70M0&usp=drive_fs
+poster-apr-2026.jpg     https://drive.google.com/open?id=1FPszTNDwyhZCsc6IM9li2R7-BZ79OFgg&usp=drive_fs
+
+mar-2026.txt            https://drive.google.com/file/d/1FvDo2YvxhtApO2s8k4pu1BE_ur59KgPL/view?usp=sharing
+poster-mar-2026.jpg     https://drive.google.com/open?id=1j8PXSsMTb0EWPG6jLKzVkLHv7ha4YYml&usp=drive_fs
+
+mar-2026-p2.txt            https://drive.google.com/file/d/1FvDo2YvxhtApO2s8k4pu1BE_ur59KgPL/view?usp=sharing
+poster-mar-2026-p2.jpg     https://drive.google.com/open?id=1j8PXSsMTb0EWPG6jLKzVkLHv7ha4YYml&usp=drive_fs
+
+feb-2026.txt            https://drive.google.com/file/d/1LtbPu4OwkGVZ4YgaIZxHxaCN9_2lbIdR/view?usp=sharing
+poster-feb-2026.jpg     https://drive.google.com/file/d/1J8jdRw3-Xblqfzgywo-5RQ5aYbf80xFt/view?usp=sharing
+
+jan-2026.txt            https://drive.google.com/file/d/1z7Cd5lydgKr5brhhsfZva5yDQzsKm5-c/view?usp=sharing
+poster-jan-2026.jpg     https://drive.google.com/file/d/1FsMonlhZ4BNM-1qOeqv68CnL2Yh742_x/view?usp=sharing

@@ -1,113 +1,109 @@
 # col-m.us — Automated Site Builder
 
 Every time the GitHub Action runs, it:
-1. Pulls `events.md` + poster images from your Google Drive folder
-2. Rebuilds `index.html` from the template
-3. Commits the result back to this repo
-4. GitHub Pages serves it at col-m.us
+1. Reads `files.txt` in this repo to find your Google Drive file IDs
+2. Downloads each event's `.txt` file + poster image directly from Drive
+3. Rebuilds `index.html` from the template
+4. Commits the result back to this repo
+5. GitHub Pages serves it at col-m.us
+
+No Google Cloud account, no API keys, no subscriptions required — your Drive files just need to be set to "Anyone with the link can view."
 
 ---
 
-## One-time setup (about 30 minutes)
+## One-time setup (about 20 minutes)
 
 ### 1. Create a GitHub repo
 
 - Go to github.com → New repository → name it `col-m` (or anything)
 - Make it **public** (required for free GitHub Pages)
-- Upload all these files into it
+- Upload all the files from this folder into it
 
 ### 2. Enable GitHub Pages
 
 - Go to your repo → **Settings** → **Pages**
 - Source: **Deploy from a branch**
 - Branch: `main` / root (`/`)
-- Save. GitHub will give you a `*.github.io` URL — your custom domain will point here.
+- Save. GitHub will give you a `YOUR-USERNAME.github.io/repo-name` URL.
 
 ### 3. Point col-m.us to GitHub Pages
 
-In your Dreamhost DNS panel (or wherever the domain is managed):
+In your Dreamhost DNS panel, add these records:
 
-Add these DNS records:
-
-| Type  | Name | Value                  |
-|-------|------|------------------------|
-| A     | @    | 185.199.108.153        |
-| A     | @    | 185.199.109.153        |
-| A     | @    | 185.199.110.153        |
-| A     | @    | 185.199.111.153        |
+| Type  | Name | Value                   |
+|-------|------|-------------------------|
+| A     | @    | 185.199.108.153         |
+| A     | @    | 185.199.109.153         |
+| A     | @    | 185.199.110.153         |
+| A     | @    | 185.199.111.153         |
 | CNAME | www  | YOUR-USERNAME.github.io |
 
-Then in your repo → Settings → Pages → **Custom domain** → enter `col-m.us`.
-Check "Enforce HTTPS" once it propagates (can take a few hours).
+Then in your repo → **Settings** → **Pages** → **Custom domain** → enter `col-m.us` and save.
+Check "Enforce HTTPS" once it propagates (can take a few hours to a day).
 
-### 4. Set up Google Drive access
+### 4. Make your Drive files public
 
-**a) Create a Google Cloud project**
-- Go to console.cloud.google.com
-- New Project → name it "col-m site"
-- Enable the **Google Drive API** (APIs & Services → Enable APIs → search Drive)
+For each file (event .txt files and poster images):
 
-**b) Create a Service Account**
-- APIs & Services → Credentials → Create Credentials → Service Account
-- Name: `col-m-builder`, role: Viewer
-- After creation, click the account → Keys → Add Key → JSON
-- Download the JSON file — keep it safe, you'll need it in step 6
+- Right-click the file in Drive → **Share** → **Change to anyone with the link**
+- Click **Copy link** — the URL looks like:
+  `https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I0J/view`
+- The file ID is the long string between `/d/` and `/view`
 
-**c) Share your Drive folder with the service account**
-- Create a folder in Google Drive called `col-m-site` (or whatever)
-- Right-click → Share → paste the service account email (looks like `col-m-builder@your-project.iam.gserviceaccount.com`)
-- Set to **Viewer**
+### 5. Fill in files.txt
 
-**d) Get the folder ID**
-- Open the folder in your browser
-- Copy the long ID from the URL: `drive.google.com/drive/folders/THIS-PART-HERE`
+Open `files.txt` in this repo and replace the placeholder IDs with your real ones.
+List events in the order you want them on the page — most recent first.
 
-### 5. Add GitHub Secrets
+```
+apr-2025.txt            1A2B3C4D5E6F7G8H9I0J
+poster-apr-2025.jpg     1K2L3M4N5O6P7Q8R9S0T
 
-In your repo → Settings → Secrets and variables → Actions → New repository secret:
-
-| Secret name                   | Value                                         |
-|-------------------------------|-----------------------------------------------|
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | The entire contents of the JSON key file      |
-| `DRIVE_FOLDER_ID`             | The folder ID from step 4d                    |
+mar-2025.txt            1U2V3W4X5Y6Z7A8B9C0D
+poster-mar-2025.jpg     1E2F3G4H5I6J7K8L9M0N
+```
 
 ### 6. Test it
 
-- Go to your repo → Actions → "Build & Deploy Site" → Run workflow
+- Go to your repo → **Actions** → **Build & Deploy Site** → **Run workflow**
 - Watch the logs — it should download your files and commit a new `index.html`
 
 ---
 
 ## Your ongoing workflow
 
-Each month, to update the site:
+Each month:
 
-1. **Add the poster image** to your Google Drive folder (e.g. `poster-may-2025.jpg`)
-2. **Edit `events.md`** in the Drive folder — add a new event block at the top
-3. That's it. The Action runs automatically Monday at noon, or you can trigger it manually.
-
----
-
-## events.md format
-
-```markdown
-## Month YYYY — Venue Name
-**Date:** Saturday, Month DD, YYYY
-**Artists:** Artist One, Artist Two, Artist Three
-**Doors:** 8pm | **Show:** 8:30pm | **Cover:** $10
-**Poster:** poster-mon-yyyy.jpg
-
-Optional description paragraph here.
+1. Create a new `.txt` file in Google Drive for the event (see format below)
+2. Upload the poster image to Google Drive
+3. Set both files to "Anyone with the link can view"
+4. Add two lines to `files.txt` in the repo (the .txt and the image), at the top
+5. The Action runs automatically every Monday at noon, or trigger it manually
 
 ---
 
-## Previous Month YYYY — Venue Name
-...
+## Event .txt file format
+
+Each event is a plain text file in Google Drive with four sections
+separated by blank lines:
+
+```
+April 2025 — The Luggage Store Gallery
+
+Saturday, April 19, 2025
+
+A rare Bay Area appearance from Limpe Fuchs, pioneer of European
+free improvisation, joined by two Bay Area stalwarts.
+Doors 7:30pm | Show 8pm | Cover $15 sliding scale
 ```
 
-- Most recent event goes **first**
-- Separate events with `---` on its own line
-- Poster filename must exactly match the image file in the Drive folder
+That's it:
+1. **Title** — shown as the event heading
+2. **Date** — shown below the title
+3. **Description** — can be as many lines as you want
+
+The poster image is matched to the .txt by their order in `files.txt`
+(first .txt pairs with first image, second with second, etc.).
 
 ---
 
