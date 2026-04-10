@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>col-m</title>
         <meta name="description" content="A monthly music series." />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat+Subrayada" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Major+Mono+Display" rel="stylesheet">
         <style>
             /* ── Reset & base ─────────────────────────────────────── */
             *,
@@ -159,6 +162,13 @@
                 padding-left: 1rem;
             }
 
+            .logo {
+                font-family: "Major Mono Display";
+                font-size: 2rem;
+                font-weight: 700;
+                color: white;
+            }
+
             /* ── Footer ───────────────────────────────────────────── */
             .site-footer {
                 border-top: 1px solid var(--border);
@@ -198,15 +208,20 @@
     <body>
         <div class="site-wrap">
             <header class="site-header">
-                <h1>col&#8209;m</h1>
-                <p class="tagline">Monthly Music Series</p>
+                <p class="logo">-ColuMN-</>
+                <p class="tagline">
+                    San Jose's only Live Electronic Art Monthly at
+                    <a href="https://maps.app.goo.gl/u29jDnNG5jT8LJSt5"
+                        >Good Karma, 37 S 1st St., SJ</a
+                    >
+                </p>
             </header>
 
             <main class="events">{{ EVENTS }}</main>
 
             <footer class="site-footer">
                 <p>
-                    col&#8209;m &mdash;
+                    <i class="fa fa-instagram"></i>
                     <a
                         href="https://instagram.com/"
                         target="_blank"
