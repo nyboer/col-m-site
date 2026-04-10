@@ -4,7 +4,13 @@ on:
   # Run every Monday at noon UTC — adjust to taste
   schedule:
     - cron: "0 12 * * 1"
-
+  # Run when specific source files change
+  push:
+    branches:
+      - main
+    paths:
+      - file.txt
+      - templates/index.template.html
   # Also allow manual trigger from the GitHub Actions UI
   workflow_dispatch:
 
