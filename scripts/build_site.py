@@ -175,46 +175,50 @@ def main():
         shutil.rmtree(IMAGES_DIR)
     IMAGES_DIR.mkdir()
 
-    # Group entries: pair each .txt with the next image file
-    # Build a lookup: txt filename → image filename (from the adjacent image entry)
-    txt_files  = []   # [(local_name, file_id)]
-    img_files  = []   # [(local_name, file_id)]
-
-    for filename, file_id in entries:
+    # Walk entries in order, pairing each .txt with the very next image entry.
+    # This preserves the pairing exactly as written in files.txt.
+    pairs = []
+    i = 0
+    while i < len(entries):
+        filename, file_id = entries[i]
         if filename.endswith(".txt"):
-            txt_files.append((filename, file_id))
+            img_name, img_id = "", ""
+            if i + 1 < len(entries) and not entries[i + 1][0].endswith(".txt"):
+                img_name, img_id = entries[i + 1]
+                i += 2
+            else:
+                i += 1
+            pairs.append((filename, file_id, img_name, img_id))
         else:
-            img_files.append((filename, file_id))
+            print(f"  Warning: image '{filename}' has no preceding .txt, skipping.")
+            i += 1
 
-    # Download and process all images
-    for img_name, file_id in img_files:
-        raw_path = IMAGES_DIR / img_name
-        download_file(file_id, raw_path)
-        # Always output as .jpg regardless of original extension
-        jpg_name = Path(img_name).stem + ".jpg"
-        process_image(raw_path, IMAGES_DIR / jpg_name)
+    print(f"Found {len(pairs)} event(s).")
 
-    # Download all .txt files, parse each one
-    # Match txt to image by position (first txt → first image, etc.)
     events = []
-    for i, (txt_name, file_id) in enumerate(txt_files):
+    for txt_name, txt_id, img_name, img_id in pairs:
+        # Download and process the image
+        jpg_filename = ""
+        if img_name and img_id:
+            raw_path = IMAGES_DIR / img_name
+            download_file(img_id, raw_path)
+            jpg_filename = Path(img_name).stem + ".jpg"
+            process_image(raw_path, IMAGES_DIR / jpg_filename)
+
+        # Download and parse the .txt
         tmp = REPO_ROOT / txt_name
-        download_file(file_id, tmp)
+        download_file(txt_id, tmp)
         txt_content = tmp.read_text(encoding="utf-8")
         tmp.unlink()
 
-        # Use the normalised .jpg filename
-        img_filename = Path(img_files[i][0]).stem + ".jpg" if i < len(img_files) else ""
-        event = parse_event_txt(txt_content, img_filename)
+        event = parse_event_txt(txt_content, jpg_filename)
         events.append(event)
         print(f"  Parsed: {event['title']}")
-
-    print(f"Total: {len(events)} event(s).")
 
     template_text = TEMPLATE.read_text(encoding="utf-8")
     html = render_html(template_text, events)
     OUTPUT.write_text(html, encoding="utf-8")
-    print(f"✅ Built index.html.")
+    print(f"✅ Built index.html with {len(events)} event(s).")
 
 
 if __name__ == "__main__":
