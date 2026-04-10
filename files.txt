@@ -1,0 +1,13 @@
+# col-m Drive files
+# Format: filename    GOOGLE_DRIVE_FILE_ID
+#
+# To get a file's ID: right-click it in Drive → "Get link"
+# The ID is the long string in the URL:
+#   https://drive.google.com/file/d/THIS_PART_HERE/view
+#
+# events.md must be listed first.
+# Add a new poster line each month.
+
+events.md               REPLACE_WITH_YOUR_FILE_ID
+poster-apr-2025.jpg     REPLACE_WITH_YOUR_FILE_ID
+poster-mar-2025.jpg     REPLACE_WITH_YOUR_FILE_ID

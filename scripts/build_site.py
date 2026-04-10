@@ -1,75 +1,71 @@
 #!/usr/bin/env python3
 """
 col-m.us site builder
-Fetches poster images + events.md from Google Drive, rebuilds index.html
+Downloads public Google Drive files listed in files.txt, rebuilds index.html
 """
 
-import os
-import io
 import re
-import json
 import shutil
+import urllib.request
+import urllib.error
 from pathlib import Path
 from datetime import datetime
-
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseDownload
 
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-# Set DRIVE_FOLDER_ID in your GitHub Actions secrets (or .env for local use)
-DRIVE_FOLDER_ID = os.environ["DRIVE_FOLDER_ID"]
-
-# The service account JSON is stored as a GitHub secret (GOOGLE_SERVICE_ACCOUNT_JSON)
-SERVICE_ACCOUNT_INFO = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
-
-SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
-
-REPO_ROOT = Path(__file__).parent.parent
+REPO_ROOT  = Path(__file__).parent.parent
 IMAGES_DIR = REPO_ROOT / "images"
-TEMPLATE_PATH = REPO_ROOT / "template" / "index.template.html"
-OUTPUT_PATH = REPO_ROOT / "index.html"
+TEMPLATE   = REPO_ROOT / "template" / "index.template.html"
+OUTPUT     = REPO_ROOT / "index.html"
+FILES_LIST = REPO_ROOT / "files.txt"
 
 
-# ── Google Drive helpers ───────────────────────────────────────────────────────
+# ── Google Drive download ─────────────────────────────────────────────────────
 
-def get_drive_service():
-    creds = service_account.Credentials.from_service_account_info(
-        SERVICE_ACCOUNT_INFO, scopes=SCOPES
-    )
-    return build("drive", "v3", credentials=creds)
+def drive_url(file_id):
+    return f"https://drive.google.com/uc?export=download&id={file_id}"
 
 
-def list_drive_files(service, folder_id):
-    """Return list of {id, name, mimeType} dicts in the folder."""
-    results = service.files().list(
-        q=f"'{folder_id}' in parents and trashed=false",
-        fields="files(id, name, mimeType)",
-        orderBy="name desc"
-    ).execute()
-    return results.get("files", [])
+def download_file(file_id, dest_path):
+    url = drive_url(file_id)
+    print(f"  Downloading {dest_path.name} ...", end=" ", flush=True)
+    try:
+        urllib.request.urlretrieve(url, dest_path)
+        print("✓")
+    except urllib.error.URLError as e:
+        print(f"✗  FAILED: {e}")
+        raise
 
 
-def download_file(service, file_id, dest_path):
-    request = service.files().get_media(fileId=file_id)
-    dest_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(dest_path, "wb") as f:
-        downloader = MediaIoBaseDownload(f, request)
-        done = False
-        while not done:
-            _, done = downloader.next_chunk()
-    print(f"  Downloaded → {dest_path.name}")
+# ── files.txt parser ──────────────────────────────────────────────────────────
+
+def parse_files_list(text):
+    """
+    Parse files.txt — one entry per line:
+        filename    DRIVE_FILE_ID
+    Blank lines and lines starting with # are ignored.
+    """
+    entries = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split()
+        if len(parts) < 2:
+            print(f"  Skipping malformed line: {line!r}")
+            continue
+        entries.append((parts[0], parts[1]))
+    return entries
 
 
-# ── Markdown parser ────────────────────────────────────────────────────────────
+# ── Markdown parser ───────────────────────────────────────────────────────────
 
 def parse_events_md(md_text):
     """
     Parse events.md into a list of event dicts.
 
-    Expected format per event (repeat for each event, separated by ---):
+    Format per event (separate blocks with ---):
 
         ## Month YYYY — Venue Name
         **Date:** Saturday, January 18, 2025
@@ -77,11 +73,9 @@ def parse_events_md(md_text):
         **Doors:** 8pm | **Show:** 9pm | **Cover:** $10
         **Poster:** poster-jan-2025.jpg
 
-        Optional freeform description paragraph(s) here.
-
+        Optional freeform description paragraph.
     """
     events = []
-    # Split on horizontal rules
     blocks = re.split(r"\n---+\n", md_text.strip())
 
     for block in blocks:
@@ -91,29 +85,24 @@ def parse_events_md(md_text):
 
         event = {}
 
-        # Title from ## heading
         title_match = re.search(r"^##\s+(.+)$", block, re.MULTILINE)
         event["title"] = title_match.group(1).strip() if title_match else ""
+        if not event["title"]:
+            continue
 
-        # Labeled fields: **Key:** Value
         for key, field in [
-            ("date", "Date"),
+            ("date",    "Date"),
             ("artists", "Artists"),
             ("details", "Doors"),
-            ("poster", "Poster"),
+            ("poster",  "Poster"),
         ]:
-            match = re.search(rf"\*\*{field}:\*\*\s*(.+)", block)
-            event[key] = match.group(1).strip() if match else ""
+            m = re.search(rf"\*\*{field}:\*\*\s*(.+)", block)
+            event[key] = m.group(1).strip() if m else ""
 
-        # Freeform description: lines that aren't headings or **Key:** lines
         desc_lines = []
         for line in block.splitlines():
             line = line.strip()
-            if not line:
-                continue
-            if line.startswith("#"):
-                continue
-            if re.match(r"\*\*\w[\w\s]*:\*\*", line):
+            if not line or line.startswith("#") or re.match(r"\*\*\w[\w\s]*:\*\*", line):
                 continue
             desc_lines.append(line)
         event["description"] = " ".join(desc_lines)
@@ -123,7 +112,7 @@ def parse_events_md(md_text):
     return events
 
 
-# ── HTML builder ───────────────────────────────────────────────────────────────
+# ── HTML builder ──────────────────────────────────────────────────────────────
 
 def build_event_html(event):
     poster_file = event.get("poster", "").strip()
@@ -136,9 +125,11 @@ def build_event_html(event):
     artists_html = ""
     if event.get("artists"):
         artists = [a.strip() for a in event["artists"].split(",")]
-        artists_html = '<ul class="artists">' + "".join(
-            f"<li>{a}</li>" for a in artists
-        ) + "</ul>"
+        artists_html = (
+            '<ul class="artists">'
+            + "".join(f"<li>{a}</li>" for a in artists)
+            + "</ul>"
+        )
 
     desc_html = (
         f'<p class="description">{event["description"]}</p>'
@@ -164,20 +155,26 @@ def build_event_html(event):
 def render_html(template_text, events):
     events_html = "\n".join(build_event_html(e) for e in events)
     updated = datetime.now().strftime("%B %d, %Y")
-    html = template_text
-    html = html.replace("{{ EVENTS }}", events_html)
-    html = html.replace("{{ UPDATED }}", updated)
-    return html
+    return (
+        template_text
+        .replace("{{ EVENTS }}", events_html)
+        .replace("{{ UPDATED }}", updated)
+    )
 
 
-# ── Main ───────────────────────────────────────────────────────────────────────
+# ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
     print("🎵 col-m.us builder starting...")
 
-    service = get_drive_service()
-    files = list_drive_files(service, DRIVE_FOLDER_ID)
-    print(f"Found {len(files)} file(s) in Drive folder.")
+    if not FILES_LIST.exists():
+        raise FileNotFoundError(
+            "files.txt not found in repo root. "
+            "Add one listing your Drive file IDs."
+        )
+
+    entries = parse_files_list(FILES_LIST.read_text())
+    print(f"Found {len(entries)} file(s) in files.txt.")
 
     # Clear and recreate images dir
     if IMAGES_DIR.exists():
@@ -186,36 +183,27 @@ def main():
 
     events_md_text = None
 
-    for f in files:
-        name = f["name"]
-        mime = f["mimeType"]
-
-        if name == "events.md" or (name.endswith(".md") and "event" in name.lower()):
-            # Download markdown to memory
-            request = service.files().get_media(fileId=f["id"])
-            buf = io.BytesIO()
-            downloader = MediaIoBaseDownload(buf, request)
-            done = False
-            while not done:
-                _, done = downloader.next_chunk()
-            events_md_text = buf.getvalue().decode("utf-8")
-            print(f"  Read events file: {name}")
-
-        elif mime.startswith("image/") or name.lower().endswith((".jpg", ".jpeg", ".png", ".webp", ".gif")):
-            download_file(service, f["id"], IMAGES_DIR / name)
+    for filename, file_id in entries:
+        if filename.endswith(".md"):
+            tmp = REPO_ROOT / filename
+            download_file(file_id, tmp)
+            events_md_text = tmp.read_text(encoding="utf-8")
+            tmp.unlink()
+        else:
+            download_file(file_id, IMAGES_DIR / filename)
 
     if not events_md_text:
-        raise FileNotFoundError(
-            "No events.md found in the Drive folder. "
-            "Make sure a file named 'events.md' exists there."
+        raise ValueError(
+            "No .md file found in files.txt. "
+            "Make sure events.md is listed there."
         )
 
     events = parse_events_md(events_md_text)
     print(f"Parsed {len(events)} event(s).")
 
-    template_text = TEMPLATE_PATH.read_text(encoding="utf-8")
+    template_text = TEMPLATE.read_text(encoding="utf-8")
     html = render_html(template_text, events)
-    OUTPUT_PATH.write_text(html, encoding="utf-8")
+    OUTPUT.write_text(html, encoding="utf-8")
     print(f"✅ Built index.html with {len(events)} event(s).")
 
 
