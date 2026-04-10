@@ -125,6 +125,15 @@ def parse_event_txt(text, image_filename):
 # ── HTML builder ──────────────────────────────────────────────────────────────
 
 
+def linkify_mentions(text):
+    """Replace @username with a linked Instagram handle."""
+    return re.sub(
+        r"(?<=\s)@([A-Za-z0-9_.]+)",
+        r'<a href="https://www.instagram.com/\1" target="_blank" rel="noopener">@\1</a>',
+        text,
+    )
+
+
 def build_event_html(event):
     img_filename = event.get("image_filename", "")
     img_tag = (
@@ -133,10 +142,10 @@ def build_event_html(event):
         else '<div class="poster poster--placeholder"></div>'
     )
 
-    # Preserve line breaks in description
+    # Preserve line breaks in description and linkify @mentions
     desc_html = ""
     if event.get("description"):
-        lines = event["description"].splitlines()
+        lines = [linkify_mentions(line) for line in event["description"].splitlines()]
         desc_html = '<p class="description">' + "<br>".join(lines) + "</p>"
 
     return f"""
