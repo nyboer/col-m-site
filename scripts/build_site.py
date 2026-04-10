@@ -7,24 +7,24 @@ rebuilds index.html from the template.
 
 import re
 import shutil
-import urllib.request
 import urllib.error
-from pathlib import Path
+import urllib.request
 from datetime import datetime
+from pathlib import Path
 
 from PIL import Image
 
-
 # ── Config ────────────────────────────────────────────────────────────────────
 
-REPO_ROOT  = Path(__file__).parent.parent
+REPO_ROOT = Path(__file__).parent.parent
 IMAGES_DIR = REPO_ROOT / "images"
-TEMPLATE   = REPO_ROOT / "template" / "index.template.html"
-OUTPUT     = REPO_ROOT / "index.html"
+TEMPLATE = REPO_ROOT / "template" / "index.template.html"
+OUTPUT = REPO_ROOT / "index.html"
 FILES_LIST = REPO_ROOT / "files.txt"
 
 
 # ── Google Drive download ─────────────────────────────────────────────────────
+
 
 def file_id_from_url(url):
     """Extract a Drive file ID from a share URL, or return the string as-is."""
@@ -64,6 +64,7 @@ def process_image(src_path, dest_path, width=1200, quality=80):
 
 # ── files.txt parser ──────────────────────────────────────────────────────────
 
+
 def parse_files_list(text):
     """
     Parse files.txt — one entry per line:
@@ -89,6 +90,7 @@ def parse_files_list(text):
 
 # ── Event .txt parser ─────────────────────────────────────────────────────────
 
+
 def parse_event_txt(text, image_filename):
     """
     Parse a single event .txt file.
@@ -111,9 +113,9 @@ def parse_event_txt(text, image_filename):
     paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text.strip())]
 
     event = {
-        "title":          paragraphs[0] if len(paragraphs) > 0 else "",
-        "date":           paragraphs[1] if len(paragraphs) > 1 else "",
-        "description":    paragraphs[2] if len(paragraphs) > 2 else "",
+        "title": paragraphs[0] if len(paragraphs) > 0 else "",
+        "date": paragraphs[1] if len(paragraphs) > 1 else "",
+        "description": paragraphs[2] if len(paragraphs) > 2 else "",
         "image_filename": image_filename,
     }
 
@@ -121,6 +123,7 @@ def parse_event_txt(text, image_filename):
 
 
 # ── HTML builder ──────────────────────────────────────────────────────────────
+
 
 def build_event_html(event):
     img_filename = event.get("image_filename", "")
@@ -134,7 +137,7 @@ def build_event_html(event):
     desc_html = ""
     if event.get("description"):
         lines = event["description"].splitlines()
-        desc_html = "<p class=\"description\">" + "<br>".join(lines) + "</p>"
+        desc_html = '<p class="description">' + "<br>".join(lines) + "</p>"
 
     return f"""
     <article class="event">
@@ -152,14 +155,13 @@ def build_event_html(event):
 def render_html(template_text, events):
     events_html = "\n".join(build_event_html(e) for e in events)
     updated = datetime.now().strftime("%B %d, %Y")
-    return (
-        template_text
-        .replace("{{ EVENTS }}", events_html)
-        .replace("{{ UPDATED }}", updated)
+    return template_text.replace("{{ EVENTS }}", events_html).replace(
+        "{{ UPDATED }}", updated
     )
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
+
 
 def main():
     print("🎵 col-m.us builder starting...")
@@ -202,7 +204,7 @@ def main():
         if img_name and img_id:
             raw_path = IMAGES_DIR / img_name
             download_file(img_id, raw_path)
-            jpg_filename = Path(img_name).stem + ".jpg"
+            jpg_filename = Path(txt_name).stem + ".jpg"
             process_image(raw_path, IMAGES_DIR / jpg_filename)
 
         # Download and parse the .txt
