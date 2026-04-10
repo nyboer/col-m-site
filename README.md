@@ -48,7 +48,7 @@ For each file (event .txt files and poster images):
 - Right-click the file in Drive → **Share** → **Change to anyone with the link**
 - Click **Copy link** — the URL looks like:
   `https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I0J/view`
-- The file ID is the long string between `/d/` and `/view`
+- Paste the full URL directly — no need to extract the ID
 
 ### 5. Fill in files.txt
 
@@ -56,11 +56,11 @@ Open `files.txt` in this repo and replace the placeholder IDs with your real one
 List events in the order you want them on the page — most recent first.
 
 ```
-apr-2025.txt            1A2B3C4D5E6F7G8H9I0J
-poster-apr-2025.jpg     1K2L3M4N5O6P7Q8R9S0T
+apr-2025.txt          https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I0J/view?usp=sharing
+poster-apr-2025.jpg   https://drive.google.com/file/d/1K2L3M4N5O6P7Q8R9S0T/view?usp=sharing
 
-mar-2025.txt            1U2V3W4X5Y6Z7A8B9C0D
-poster-mar-2025.jpg     1E2F3G4H5I6J7K8L9M0N
+mar-2025.txt          https://drive.google.com/file/d/1U2V3W4X5Y6Z7A8B9C0D/view?usp=sharing
+poster-mar-2025.jpg   https://drive.google.com/file/d/1E2F3G4H5I6J7K8L9M0N/view?usp=sharing
 ```
 
 ### 6. Test it

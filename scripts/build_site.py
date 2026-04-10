@@ -50,7 +50,8 @@ def download_file(file_id, dest_path):
 def parse_files_list(text):
     """
     Parse files.txt — one entry per line:
-        filename    DRIVE_FILE_ID
+        filename    DRIVE_URL_OR_FILE_ID
+    The second column can be a full Google Drive share URL or just a bare ID.
     Blank lines and lines starting with # are ignored.
     Order is preserved; that's the display order of events.
     """
@@ -63,7 +64,9 @@ def parse_files_list(text):
         if len(parts) < 2:
             print(f"  Skipping malformed line: {line!r}")
             continue
-        entries.append((parts[0], parts[1]))
+        filename = parts[0]
+        file_id = file_id_from_url(parts[1])
+        entries.append((filename, file_id))
     return entries
 
 
