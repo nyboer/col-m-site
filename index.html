@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>col-m</title>
+  <meta name="description" content="A monthly music series.">
+  <style>
+    /* ── Reset & base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #161616;
+      --border:   #2a2a2a;
+      --text:     #e8e4dc;
+      --muted:    #7a7570;
+      --accent:   #c8b89a;
+      --max-w:    860px;
+      --gap:      2.5rem;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ── Layout ───────────────────────────────────────────── */
+    .site-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* ── Header ───────────────────────────────────────────── */
+    .site-header {
+      padding: 3.5rem 0 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--gap);
+    }
+
+    .site-header h1 {
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
+      color: var(--text);
+    }
+
+    .site-header .tagline {
+      margin-top: 0.4rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── Events list ──────────────────────────────────────── */
+    .events {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--gap) * 1.5);
+      padding-bottom: 4rem;
+    }
+
+    /* ── Single event ─────────────────────────────────────── */
+    .event {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
+      padding-bottom: calc(var(--gap) * 1.5);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .event:last-child { border-bottom: none; }
+
+    /* Poster */
+    .event__poster { position: relative; }
+
+    .poster {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--border);
+    }
+
+    .poster--placeholder {
+      aspect-ratio: 3/4;
+      background: var(--surface);
+    }
+
+    /* Info */
+    .event__info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-top: 0.25rem;
+    }
+
+    .event__title {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+    }
+
+    .event__date {
+      color: var(--accent);
+      font-size: 0.88rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .artists {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .artists li {
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .artists li::before {
+      content: "– ";
+      color: var(--muted);
+    }
+
+    .event__details {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .description {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.7;
+      border-left: 2px solid var(--border);
+      padding-left: 1rem;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .site-footer p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .site-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover { text-decoration: underline; }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 580px) {
+      .event {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-wrap">
+
+    <header class="site-header">
+      <h1>col&#8209;m</h1>
+      <p class="tagline">Monthly Music Series</p>
+    </header>
+
+    <main class="events">
+      
+    <article class="event">
+      <div class="event__poster">
+        <img src="images/IG_post1.jpg" alt="Live Modular for Modular Living poster" class="poster">
+      </div>
+      <div class="event__info">
+        <h2 class="event__title">Live Modular for Modular Living</h2>
+        <p class="event__date">April 8, 2026</p>
+        <p class="description">This month @column_sj welcomes back M31 Transport @m31transport and The Rhythmist @piqsel. M31 Transport performs live techno as a duo. Sharing a single modular synthesizer, they weave their way through a hypnophonic set of texture and rhythm. A process that may gradually replace your organic tissues with electromagnetic photons, you will, at the very least, carry a new appreciation of the energies carried by sound. The Rhythmist is Derek Scott, one third of the legendary Haptic Synapses, a totality of inventive music making. True to his moniker, rhythms and percussion come forward to enlighten, movement and attention are focused.<br>Join us @goodkarmasj this coming Wednesday for a showcase of some amazing artists and live electronics</p>
+      </div>
+    </article>
+
+    <article class="event">
+      <div class="event__poster">
+        <img src="images/IG_post3.jpg" alt="﻿D!SHA: Hybrid DJ poster" class="poster">
+      </div>
+      <div class="event__info">
+        <h2 class="event__title">﻿D!SHA: Hybrid DJ</h2>
+        <p class="event__date">March 11, 2026</p>
+        <p class="description">We are excited to present D!SHA (@dishamusicdisha) this week at @column_sj! Her variety and musical curiosity displayed on her IG feed made me reach out to D!SHA to see if she wanted to come play at our downtown San Jose monthly. We have had live acts, we have had DJs, but D!SHA blends the two with her own imaginative take on performance. A Turkish-born resident of San Francisco, D!SHA has grown with a varied musical life: children’s choir, manager for the Turkish Opera and Ballet, radio DJ, electronic music producer, festival organizer. We can’t wait to see what she cooks up with her original tracks, DJ tracks, and her own stunning voice. Join us Wednesday March 11 @goodkarmasj 8-11.</p>
+      </div>
+    </article>
+
+    <article class="event">
+      <div class="event__poster">
+        <img src="images/nbor_live_on_bugzapper.jpg" alt="﻿nbor: Live on Bugzapper poster" class="poster">
+      </div>
+      <div class="event__info">
+        <h2 class="event__title">﻿nbor: Live on Bugzapper</h2>
+        <p class="event__date">March 11, 2026</p>
+        <p class="description">As part of Column stalwart and Gameshop Downstairs owner Anthony Guarino's new radio program, Peter Nyboer will have a full hour set on San Jose State radio station KSJS 90.5 FM. We look forward to future collaboration with the Bugzapper program as it falls perfectly on Wednesdays before Column!</p>
+      </div>
+    </article>
+
+    <article class="event">
+      <div class="event__poster">
+        <img src="images/IG_post2.jpeg" alt="﻿Snoww: Falling on Column poster" class="poster">
+      </div>
+      <div class="event__info">
+        <h2 class="event__title">﻿Snoww: Falling on Column</h2>
+        <p class="event__date">Feb 11, 2026</p>
+        <p class="description">I recently met Snoww (Xiao Xue Wang) through a common friend who had lent her a synthesizer. As one mission of Column is to draw out the hidden electronic music producers of San Jose, I was really happy to find that she’s visiting here in San Jose from China, and was looking for the scene here! She’ll be presenting a live set on Wednesday and I hope you can make it out!<br>As a producer, DJ, singer, and writer, Snoww founded the influential Chinese all-female bands "FakeGentle" and "The Hormones." She also directs cutting-edge music and education projects such as E-Motion, E-School, and "Siwen Electric Field."<br>Snoww’s music is a profound intersection of East and West. She masterfully intertwines the cool rhythms of Deep House and the granular textures of Chillwave with the aesthetic of traditional Eastern tonalities. By deconstructing melodic logic, she seeks to awaken deep emotional flows within a rational electronic framework. https://www.snowwmusic.com/</p>
+      </div>
+    </article>
+
+    <article class="event">
+      <div class="event__poster">
+        <img src="images/IG_post3.png" alt="﻿Kerri LeBon Brings The Goods poster" class="poster">
+      </div>
+      <div class="event__info">
+        <h2 class="event__title">﻿Kerri LeBon Brings The Goods</h2>
+        <p class="event__date">Jan 14, 2026</p>
+        <p class="description">Usually, @column_sj , you’ll find the raw wires of synthesizers squeezing voltage to the speakers. We kick off the new year with another facet of technoculture: the seamless journey of a well-crafted DJ set. Oakland’s Kerri LeBon @kerrilebon has taken her as far afield as Athens, Bogota, Kyiv, London, Milan, Medellin, Moscow and St Petersburg, as well as lauded festival Berlin Atonal. After Wed Jan 14, she can add San Jose to that list! Her uncommon selections of top-class electro, deep Detroit-styled techno, and sophisticated dub techno will energize your month. Come join us as we get down to some deep sounds.</p>
+      </div>
+    </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>col&#8209;m &mdash; <a href="https://instagram.com/" target="_blank" rel="noopener">@col_m</a></p>
+      <p>Updated April 10, 2026</p>
+    </footer>
+
+  </div>
+</body>
+</html>
