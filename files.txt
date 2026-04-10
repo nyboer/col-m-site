@@ -8,7 +8,7 @@
 # List events in the order you want them on the page (most recent first).
 # Each event needs one .txt file and one image file.
 
-apr-2026.txt     https://drive.google.com/open?id=1Br2EPL9fm7sp4qCC1ONlLlyW-aws70M0&usp=drive_fs
+apr-2026.txt     https://drive.google.com/file/d/1Br2EPL9fm7sp4qCC1ONlLlyW-aws70M0/view?usp=sharing
 IG_post1.jpg     https://drive.google.com/file/d/1FPszTNDwyhZCsc6IM9li2R7-BZ79OFgg/view?usp=sharing
 
 mar-2026.txt     https://drive.google.com/file/d/1FvDo2YvxhtApO2s8k4pu1BE_ur59KgPL/view?usp=sharing
