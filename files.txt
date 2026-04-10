@@ -8,101 +8,101 @@
 # List events in the order you want them on the page (most recent first).
 # Each event needs one .txt file and one image file.
 
-apr-2026.txt     https://drive.google.com/file/d/1Br2EPL9fm7sp4qCC1ONlLlyW-aws70M0/view?usp=sharing
-IG_post1.jpg     https://drive.google.com/file/d/1FPszTNDwyhZCsc6IM9li2R7-BZ79OFgg/view?usp=sharing
+apr-2026.txt     https://drive.google.com/file/d/1Br2EPL9fm7sp4qCC1ONlLlyW-aws70M0
+IG_post1.jpg     https://drive.google.com/file/d/1FPszTNDwyhZCsc6IM9li2R7-BZ79OFgg
 
-mar-2026.txt     https://drive.google.com/file/d/1FvDo2YvxhtApO2s8k4pu1BE_ur59KgPL/view?usp=sharing
-IG_post3.jpg     https://drive.google.com/file/d/1j8PXSsMTb0EWPG6jLKzVkLHv7ha4YYml/view?usp=sharing
+mar-2026.txt     https://drive.google.com/file/d/1FvDo2YvxhtApO2s8k4pu1BE_ur59KgPL
+IG_post3.jpg     https://drive.google.com/file/d/1j8PXSsMTb0EWPG6jLKzVkLHv7ha4YYml
 
-mar-2026-p2.txt  https://drive.google.com/file/d/1DbaskElO8sJ9YtsdPqP6BZ4QrC-Iq0M1/view?usp=sharing
-nbor_live_on_bugzapper.jpg     https://drive.google.com/file/d/1-rK4NMoWszQbEKP40Kg5XEKNU1FRiFHV/view?usp=sharing
+mar-2026-p2.txt  https://drive.google.com/file/d/1DbaskElO8sJ9YtsdPqP6BZ4QrC-Iq0M1
+nbor_live_on_bugzapper.jpg     https://drive.google.com/file/d/1-rK4NMoWszQbEKP40Kg5XEKNU1FRiFHV
 
-feb-2026.txt      https://drive.google.com/file/d/1LtbPu4OwkGVZ4YgaIZxHxaCN9_2lbIdR/view?usp=sharing
-IG_post2.jpeg     https://drive.google.com/file/d/1J8jdRw3-Xblqfzgywo-5RQ5aYbf80xFt/view?usp=sharing
+feb-2026.txt      https://drive.google.com/file/d/1LtbPu4OwkGVZ4YgaIZxHxaCN9_2lbIdR
+IG_post2.jpeg     https://drive.google.com/file/d/1J8jdRw3-Xblqfzgywo-5RQ5aYbf80xFt
 
-jan-2026.txt     https://drive.google.com/file/d/1z7Cd5lydgKr5brhhsfZva5yDQzsKm5-c/view?usp=sharing
-IG_post3.png     https://drive.google.com/file/d/1FsMonlhZ4BNM-1qOeqv68CnL2Yh742_x/view?usp=sharing
+jan-2026.txt     https://drive.google.com/file/d/1z7Cd5lydgKr5brhhsfZva5yDQzsKm5-c
+IG_post3.png     https://drive.google.com/file/d/1FsMonlhZ4BNM-1qOeqv68CnL2Yh742_x
 
-dec-2025.txt   https://drive.google.com/file/d/16ihqaaXPpJF48XLdWxvT6ytjEarDEs9V/view?usp=sharing
-IG_Story.png  https://drive.google.com/file/d/1TrtlJmQtvEQCH6axf4S9ujMsL9eCAKQ3/view?usp=sharing
+dec-2025.txt   https://drive.google.com/file/d/16ihqaaXPpJF48XLdWxvT6ytjEarDEs9V
+IG_Story.png  https://drive.google.com/file/d/1TrtlJmQtvEQCH6axf4S9ujMsL9eCAKQ3
 
-nov-2025.txt https://drive.google.com/file/d/1NYN-kYpPUxCocO3pudKjy2ub2929pIaF/view?usp=sharing
-IG_post2.jpg https://drive.google.com/file/d/1VG6iYLwxUP5sF77U9LGmPMP4IBgInyRs/view?usp=sharing
+nov-2025.txt https://drive.google.com/file/d/1NYN-kYpPUxCocO3pudKjy2ub2929pIaF
+IG_post2.jpg https://drive.google.com/file/d/1VG6iYLwxUP5sF77U9LGmPMP4IBgInyRs
 
-oct-2025.txt https://drive.google.com/file/d/1_dqjPFLr_aHv6htB_-8kFCLlAK9Y2yDm/view?usp=sharing
-IG_post1_2.png  https://drive.google.com/file/d/13Qi7nHPHHAoRf5pUzAcohidw9lc4w8wK/view?usp=sharing
+oct-2025.txt https://drive.google.com/file/d/1_dqjPFLr_aHv6htB_-8kFCLlAK9Y2yDm
+IG_post1_2.png  https://drive.google.com/file/d/13Qi7nHPHHAoRf5pUzAcohidw9lc4w8wK
 
-sep-2025.txt  https://drive.google.com/open?id=1_EqLjQ5AcHGqhrhQiQUeVDICX82rlajr/view?usp=sharing
-IG_post1.png  https://drive.google.com/file/d/11gaaWIgKKUOa0mEed2xHcL8un7TSbKS6/view?usp=sharing
+sep-2025.txt  https://drive.google.com/open?id=1_EqLjQ5AcHGqhrhQiQUeVDICX82rlajr
+IG_post1.png  https://drive.google.com/file/d/11gaaWIgKKUOa0mEed2xHcL8un7TSbKS6
 
-aug-2025.txt https://drive.google.com/open?id=1yfp8DzfC4uut2p4uIsRH4yi3k_60R65N/view?usp=sharing
-poster_0825.jpg  https://drive.google.com/file/d/1Y_XLfJYiwV0bNdWx67NcwOrBUBfEiPcO/view?usp=sharing
+aug-2025.txt https://drive.google.com/open?id=1yfp8DzfC4uut2p4uIsRH4yi3k_60R65N
+poster_0825.jpg  https://drive.google.com/file/d/1Y_XLfJYiwV0bNdWx67NcwOrBUBfEiPcO
 
-jul-2025.txt  https://drive.google.com/open?id=1knKYY6uBFbGK2FSKb4l0qZ-QjU26AM9G/view?usp=sharing
-poster_0725.jpg  https://drive.google.com/file/d/1Z8I-o5_lrW0kiVFlhg5o46HeJv45NbFc/view?usp=sharing
+jul-2025.txt  https://drive.google.com/open?id=1knKYY6uBFbGK2FSKb4l0qZ-QjU26AM9G
+poster_0725.jpg  https://drive.google.com/file/d/1Z8I-o5_lrW0kiVFlhg5o46HeJv45NbFc
 
-jun-2025.txt  https://drive.google.com/open?id=1H8khTUALT6qgCzK9QQMRJIZQSh6iyOwk/view?usp=sharing
-poster_0625.jpg https://drive.google.com/open?id=1wg4wlKi4hOgSfCy8QZiOwdB4ZQYb18FU/view?usp=sharing
+jun-2025.txt  https://drive.google.com/open?id=1H8khTUALT6qgCzK9QQMRJIZQSh6iyOwk
+poster_0625.jpg https://drive.google.com/open?id=1wg4wlKi4hOgSfCy8QZiOwdB4ZQYb18FU
 
-jun-2025-p2.txt  https://drive.google.com/open?id=1VEQHcNaO3i0QIcxN7qc4N9DkgcFCz9l4/view?usp=sharing
-poster_0625_sz.jpg  https://drive.google.com/open?id=1gRSDGfGU8cJYq2aW5-8DYOHzhzWM5hQJ/view?usp=sharing
+jun-2025-p2.txt  https://drive.google.com/open?id=1VEQHcNaO3i0QIcxN7qc4N9DkgcFCz9l4
+poster_0625_sz.jpg  https://drive.google.com/open?id=1gRSDGfGU8cJYq2aW5-8DYOHzhzWM5hQJ
 
-may-2025.txt  https://drive.google.com/open?id=15mQs5BND_KS-X-sAzt98o8dJFRg29HY6/view?usp=sharing
-poster_0525_2.jpg  https://drive.google.com/open?id=1vZ9fu7PAq3Um0NIgbAnPtzBzIH-9kBpp/view?usp=sharing
+may-2025.txt  https://drive.google.com/open?id=15mQs5BND_KS-X-sAzt98o8dJFRg29HY6
+poster_0525_2.jpg  https://drive.google.com/open?id=1vZ9fu7PAq3Um0NIgbAnPtzBzIH-9kBpp
 
-may-2025-p2.txt  https://drive.google.com/open?id=19tOpEtxpTVXhREZuj7-qOqEsLj8Qji9i/view?usp=sharing
-poster_0525.jpg  https://drive.google.com/open?id=1JQGu0uaneUlvsAOW84WB7SjLgVLSsM4E/view?usp=sharing
+may-2025-p2.txt  https://drive.google.com/open?id=19tOpEtxpTVXhREZuj7-qOqEsLj8Qji9i
+poster_0525.jpg  https://drive.google.com/open?id=1JQGu0uaneUlvsAOW84WB7SjLgVLSsM4E
 
-apr-2025.txt  https://drive.google.com/open?id=1ZQ-exN7Xk4DXF1Pg3wPPeobb_RMjyjI1/view?usp=sharing
-poster_0425.jpg  https://drive.google.com/open?id=10Iu5o0-3uk8Q0__x-7w-a_uXsLWBaIRZ/view?usp=sharing
+apr-2025.txt  https://drive.google.com/open?id=1ZQ-exN7Xk4DXF1Pg3wPPeobb_RMjyjI1
+poster_0425.jpg  https://drive.google.com/open?id=10Iu5o0-3uk8Q0__x-7w-a_uXsLWBaIRZ
 
-mar-2025.txt  https://drive.google.com/open?id=1tJRkTMOeqh8k1e2RXCF84Lvs1LPt7POu/view?usp=sharing
-poster_0325.jpg  https://drive.google.com/open?id=1hTphLF2CbxeP3mzTFtfNqeQ2zaJ71AJD/view?usp=sharing
+mar-2025.txt  https://drive.google.com/open?id=1tJRkTMOeqh8k1e2RXCF84Lvs1LPt7POu
+poster_0325.jpg  https://drive.google.com/open?id=1hTphLF2CbxeP3mzTFtfNqeQ2zaJ71AJD
 
-feb-2025.txt  https://drive.google.com/open?id=16HMNRzDseQ6f1mGZnaqMXGr_qs4IlI77/view?usp=sharing
-poster_0225.jpg  https://drive.google.com/open?id=1obG9c0FWJ_WtxGb7JbiRMZw5K9Qfa1IQ/view?usp=sharing
+feb-2025.txt  https://drive.google.com/open?id=16HMNRzDseQ6f1mGZnaqMXGr_qs4IlI77
+poster_0225.jpg  https://drive.google.com/open?id=1obG9c0FWJ_WtxGb7JbiRMZw5K9Qfa1IQ
 
-jan-2024.txt  https://drive.google.com/open?id=1cfaLY1e9WX_oTWQsB690zL5FTZfGfN6i/view?usp=sharing
-poster_0125.jpg  https://drive.google.com/open?id=1AVmhKyFDC5zDk5wvYigIaHUnpVdiV3x_/view?usp=sharing
+jan-2024.txt  https://drive.google.com/open?id=1cfaLY1e9WX_oTWQsB690zL5FTZfGfN6i
+poster_0125.jpg  https://drive.google.com/open?id=1AVmhKyFDC5zDk5wvYigIaHUnpVdiV3x_
 
-dec-2024.txt  https://drive.google.com/open?id=1YeP3APBaUKk-ZnDlbIJSJSVbuG3sKiEA/view?usp=sharing
-poster_1224.jpg  https://drive.google.com/open?id=1rMPtTI7aS6ioWq-5VU7zQ-WAX3Brtw6h/view?usp=sharing
+dec-2024.txt  https://drive.google.com/open?id=1YeP3APBaUKk-ZnDlbIJSJSVbuG3sKiEA
+poster_1224.jpg  https://drive.google.com/open?id=1rMPtTI7aS6ioWq-5VU7zQ-WAX3Brtw6h
 
-nov-2024.txt  https://drive.google.com/open?id=1_ZpcCe0--yZ_kKoE13j_-Imw_kAw59Rt/view?usp=sharing
-poster_1124.jpg  https://drive.google.com/open?id=1rWxhjI4633ScpOby7J87jmWIW6xdRKsI/view?usp=sharing
+nov-2024.txt  https://drive.google.com/open?id=1_ZpcCe0--yZ_kKoE13j_-Imw_kAw59Rt
+poster_1124.jpg  https://drive.google.com/open?id=1rWxhjI4633ScpOby7J87jmWIW6xdRKsI
 
-oct-2024.txt  https://drive.google.com/open?id=1C_aIxHQAzYCQrHlsah5MlJL4a-0rYFHn/view?usp=sharing
-poster_1024.jpg  https://drive.google.com/open?id=1hDu0M-ZpZe0l0eAOE7_Nqagp1YwsMwJC/view?usp=sharing
+oct-2024.txt  https://drive.google.com/open?id=1C_aIxHQAzYCQrHlsah5MlJL4a-0rYFHn
+poster_1024.jpg  https://drive.google.com/open?id=1hDu0M-ZpZe0l0eAOE7_Nqagp1YwsMwJC
 
-sep-2024.txt  https://drive.google.com/open?id=1Y_rGyOkEPX8T-z3GhDS9gBpboRkrcaKs/view?usp=sharing
-poster_0924.jpg  https://drive.google.com/open?id=1Eq0XI0DTac3ZVK-q0OhSDt4vjfTaZtom/view?usp=sharing
+sep-2024.txt  https://drive.google.com/open?id=1Y_rGyOkEPX8T-z3GhDS9gBpboRkrcaKs
+poster_0924.jpg  https://drive.google.com/open?id=1Eq0XI0DTac3ZVK-q0OhSDt4vjfTaZtom
 
-aug-2024.txt  https://drive.google.com/open?id=1IKcyhveKYaDOAE9NNE07FdGoXgmUB-GV/view?usp=sharing
-poster_0824.jpg  https://drive.google.com/open?id=1YVeJKsTn8_gPiCjX92MOrCJi2_NMih8R/view?usp=sharing
+aug-2024.txt  https://drive.google.com/open?id=1IKcyhveKYaDOAE9NNE07FdGoXgmUB-GV
+poster_0824.jpg  https://drive.google.com/open?id=1YVeJKsTn8_gPiCjX92MOrCJi2_NMih8R
 
-jun-2024.txt  https://drive.google.com/open?id=1BfpvTDD_gR8lsUhF-ghPakOgvZtmWvpT/view?usp=sharing
-poster_0624.jpg  https://drive.google.com/open?id=14WDg4lPHhDN3R_JAiFym_WDK3yctsrlD/view?usp=sharing
+jun-2024.txt  https://drive.google.com/open?id=1BfpvTDD_gR8lsUhF-ghPakOgvZtmWvpT
+poster_0624.jpg  https://drive.google.com/open?id=14WDg4lPHhDN3R_JAiFym_WDK3yctsrlD
 
-may-2024.txt  https://drive.google.com/open?id=1egi0q_CcB7ffCiRVCVPF6WGNeLXOfHhh/view?usp=sharing
-poster_0524.jpg  https://drive.google.com/open?id=143JV-FxCzXEqRyQhRzDGHTPipBEqhmiK/view?usp=sharing
+may-2024.txt  https://drive.google.com/open?id=1egi0q_CcB7ffCiRVCVPF6WGNeLXOfHhh
+poster_0524.jpg  https://drive.google.com/open?id=143JV-FxCzXEqRyQhRzDGHTPipBEqhmiK
 
-apr-2024.txt  https://drive.google.com/open?id=1pzm5CdeIReTN0J7CffzqEXtQlE8LeRC0/view?usp=sharing
-poster_0424.jpg  https://drive.google.com/open?id=14Nxnxx5QLONpF8qtzn5PWBNrkw2XhDi-/view?usp=sharing
+apr-2024.txt  https://drive.google.com/open?id=1pzm5CdeIReTN0J7CffzqEXtQlE8LeRC0
+poster_0424.jpg  https://drive.google.com/open?id=14Nxnxx5QLONpF8qtzn5PWBNrkw2XhDi-
 
-mar-2024.txt  https://drive.google.com/open?id=1KpSFOfa0hedehu5rT0Uw8k8ecAwe-RtN/view?usp=sharing
-poster_0324.jpg  https://drive.google.com/open?id=145LmC1l62xxqMF1_F1r8Yyf0uczg_KGe/view?usp=sharing
+mar-2024.txt  https://drive.google.com/open?id=1KpSFOfa0hedehu5rT0Uw8k8ecAwe-RtN
+poster_0324.jpg  https://drive.google.com/open?id=145LmC1l62xxqMF1_F1r8Yyf0uczg_KGe
 
-feb-2024.txt  https://drive.google.com/open?id=1g_A0u3FsqIjwt_hp0jixnUOEtTGozzDU/view?usp=sharing
-poster_0224.jpg  https://drive.google.com/open?id=14agKXcxtp5ezVN_c-YKzhO12372i7-O5/view?usp=sharing
+feb-2024.txt  https://drive.google.com/open?id=1g_A0u3FsqIjwt_hp0jixnUOEtTGozzDU
+poster_0224.jpg  https://drive.google.com/open?id=14agKXcxtp5ezVN_c-YKzhO12372i7-O5
 
-jan-2024-p2.txt  https://drive.google.com/open?id=17v8uuSnk_jK2xCNVqjdqWMPlrCgxw71y/view?usp=sharing
-poster_0124.jpg  https://drive.google.com/open?id=14evedj05P97YdhWa1ydrbpSrRUXYqsAt/view?usp=sharing
+jan-2024-p2.txt  https://drive.google.com/open?id=17v8uuSnk_jK2xCNVqjdqWMPlrCgxw71y
+poster_0124.jpg  https://drive.google.com/open?id=14evedj05P97YdhWa1ydrbpSrRUXYqsAt
 
-dec-2023.txt  https://drive.google.com/open?id=1gWEBnIUJ7PBqQVs9pYKFfNiHy-8j28Dw/view?usp=sharing
-poster_1223.jpg  https://drive.google.com/open?id=14_IprISX8L0ljXp6yOinnu_0CuwGFfiB/view?usp=sharing
+dec-2023.txt  https://drive.google.com/open?id=1gWEBnIUJ7PBqQVs9pYKFfNiHy-8j28Dw
+poster_1223.jpg  https://drive.google.com/open?id=14_IprISX8L0ljXp6yOinnu_0CuwGFfiB
 
-nov-2023.txt  https://drive.google.com/open?id=1lJcPn5trLeV5NvFUcgPr6te2SLnxhn7J/view?usp=sharing
-poster_1123.jpg  https://drive.google.com/open?id=14A2zzg0XAwehnN-4k-MEhXEP1KPG0GD4/view?usp=sharing
+nov-2023.txt  https://drive.google.com/open?id=1lJcPn5trLeV5NvFUcgPr6te2SLnxhn7J
+poster_1123.jpg  https://drive.google.com/open?id=14A2zzg0XAwehnN-4k-MEhXEP1KPG0GD4
 
-sep-2023.txt  https://drive.google.com/open?id=1tAYrywRQIkE2Nmo52jcTqK-iWKnizUO5/view?usp=sharing
-poster_0923.jpg  https://drive.google.com/open?id=14eYUgFDIi-g7Tjl3MzDN926oeaCPc4xv/view?usp=sharing
+sep-2023.txt  https://drive.google.com/open?id=1tAYrywRQIkE2Nmo52jcTqK-iWKnizUO5
+poster_0923.jpg  https://drive.google.com/open?id=14eYUgFDIi-g7Tjl3MzDN926oeaCPc4xv
