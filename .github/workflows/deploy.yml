@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      - file.txt
-      - templates/index.template.html
+      - files.txt
+      - template/index.template.html
       - scripts/build_site.py
   # Also allow manual trigger from the GitHub Actions UI
   workflow_dispatch:
