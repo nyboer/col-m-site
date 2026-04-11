@@ -8,6 +8,9 @@
 # List events in the order you want them on the page (most recent first).
 # Each event needs one .txt file and one image file.
 
+apr-2026_cadre.txt  https://drive.google.com/file/d/1W3XVa1vihrSPlVtUF2lyOSBeqNTrWl0M
+CADREFly_Single_Color_Square.PNG  https://drive.google.com/file/d/1bi8eOY3q53RKkgsJ-uyGuyGGZ1u1WAQm
+
 apr-2026.txt     https://drive.google.com/file/d/1Br2EPL9fm7sp4qCC1ONlLlyW-aws70M0
 IG_post1.jpg     https://drive.google.com/file/d/1FPszTNDwyhZCsc6IM9li2R7-BZ79OFgg
 
