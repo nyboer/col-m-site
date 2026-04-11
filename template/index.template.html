@@ -9,14 +9,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat+Subrayada" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Major+Mono+Display" rel="stylesheet">
         <style>
-            /* ── Reset & base ─────────────────────────────────────── */
-            *,
-            *::before,
-            *::after {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
             :root {
                 --bg: #0d0d0d;
@@ -29,9 +22,7 @@
                 --gap: 2.5rem;
             }
 
-            html {
-                scroll-behavior: smooth;
-            }
+            html { scroll-behavior: smooth; }
 
             body {
                 background: var(--bg);
@@ -42,12 +33,21 @@
                 min-height: 100vh;
             }
 
-            a {
-                color: var(--accent);
+            a { color: var(--accent); }
+
+            /* ── WebGL background ─────────────────────────────────── */
+            #mesh-bg {
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                z-index: 0;
+                pointer-events: none;
             }
 
             /* ── Layout ───────────────────────────────────────────── */
             .site-wrap {
+                position: relative;
+                z-index: 1;
                 max-width: var(--max-w);
                 margin: 0 auto;
                 padding: 0 1.25rem;
@@ -93,33 +93,15 @@
                 border-bottom: 1px solid var(--border);
             }
 
-            .event:last-child {
-                border-bottom: none;
-            }
+            .event:last-child { border-bottom: none; }
 
-            /* Poster */
-            .event__poster {
-                position: relative;
-            }
+            .event__poster { position: relative; }
 
-            .poster {
-                width: 100%;
-                display: block;
-                border: 1px solid var(--border);
-            }
+            .poster { width: 100%; display: block; border: 1px solid var(--border); }
 
-            .poster--placeholder {
-                aspect-ratio: 3/4;
-                background: var(--surface);
-            }
+            .poster--placeholder { aspect-ratio: 3/4; background: var(--surface); }
 
-            /* Info */
-            .event__info {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-                padding-top: 0.25rem;
-            }
+            .event__info { display: flex; flex-direction: column; gap: 1rem; padding-top: 0.25rem; }
 
             .event__title {
                 font-size: clamp(1.1rem, 2.5vw, 1.4rem);
@@ -135,28 +117,11 @@
                 text-transform: uppercase;
             }
 
-            .artists {
-                list-style: none;
-                display: flex;
-                flex-direction: column;
-                gap: 0.2rem;
-            }
+            .artists { list-style: none; display: flex; flex-direction: column; gap: 0.2rem; }
+            .artists li { font-size: 1rem; color: var(--text); }
+            .artists li::before { content: "– "; color: var(--muted); }
 
-            .artists li {
-                font-size: 1rem;
-                color: var(--text);
-            }
-
-            .artists li::before {
-                content: "– ";
-                color: var(--muted);
-            }
-
-            .event__details {
-                font-size: 0.85rem;
-                color: var(--muted);
-                letter-spacing: 0.03em;
-            }
+            .event__details { font-size: 0.85rem; color: var(--muted); letter-spacing: 0.03em; }
 
             .description {
                 font-size: 1rem;
@@ -184,40 +149,25 @@
                 gap: 0.5rem;
             }
 
-            .site-footer p {
-                font-size: 0.78rem;
-                color: var(--muted);
-                letter-spacing: 0.05em;
-                text-transform: uppercase;
-            }
+            .site-footer p { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+            .site-footer a { color: var(--accent); text-decoration: none; }
+            .site-footer a:hover { text-decoration: underline; }
 
-            .site-footer a {
-                color: var(--accent);
-                text-decoration: none;
-            }
-
-            .site-footer a:hover {
-                text-decoration: underline;
-            }
-
-            /* ── Responsive ───────────────────────────────────────── */
             @media (max-width: 580px) {
-                .event {
-                    grid-template-columns: 1fr;
-                    gap: 1.25rem;
-                }
+                .event { grid-template-columns: 1fr; gap: 1.25rem; }
             }
         </style>
     </head>
     <body>
+
+        <canvas id="mesh-bg"></canvas>
+
         <div class="site-wrap">
             <header class="site-header">
                 <p class="logo">-ColuMN-</>
                 <p class="tagline">
                     San Jose's only Live Electronic Art Monthly at
-                    <a href="https://maps.app.goo.gl/u29jDnNG5jT8LJSt5"
-                        >Good Karma, 37 S 1st St., SJ</a
-                    >
+                    <a href="https://maps.app.goo.gl/u29jDnNG5jT8LJSt5">Good Karma, 37 S 1st St., SJ</a>
                 </p>
             </header>
 
@@ -226,15 +176,190 @@
             <footer class="site-footer">
                 <p>
                     <i class="fa fa-instagram"></i>
-                    <a
-                        href="https://instagram.com/"
-                        target="_blank"
-                        rel="noopener"
-                        >@col_m</a
-                    >
+                    <a href="https://instagram.com/" target="_blank" rel="noopener">@col_m</a>
                 </p>
                 <p>Updated {{ UPDATED }}</p>
             </footer>
         </div>
+
+        <script>
+        (function () {
+            // ── SETTINGS ───────────────────────────────────────────
+            const TILT_X      = -75;    // degrees — vertical viewing angle
+            const TILT_Y      =   6;    // degrees — horizontal pan
+            const ZOOM        = 0.35;   // camera distance (lower = closer)
+            const IMPULSE_STR = 0.001;  // force of each pluck
+            const IMPULSE_INT = 500;    // ms between impulses
+            const STIFFNESS   = 0.008;  // spring tightness / wave speed
+            const DAMPING     = 0.995;  // energy decay per frame (0–1)
+            const COLS        = 22;     // mesh columns
+            const ROWS        = 14;     // mesh rows
+            const JITTER      = 0.07;   // node position randomness
+            const NODE_SIZE   = 5.0;    // point radius in pixels
+            const SUBSTEPS    = 4;      // physics substeps per frame
+            const LINE_COLOR  = [0.35, 0.62, 0.88, 0.65];  // RGBA
+            const NODE_COLOR  = [0.55, 0.80, 0.96, 0.95];  // RGBA
+            const TRI_COLOR   = [0.08, 0.22, 0.38, 0.18];  // RGBA
+            // ───────────────────────────────────────────────────────
+
+            const canvas = document.getElementById('mesh-bg');
+            const gl = canvas.getContext('webgl');
+            if (!gl) return;
+
+            function resize() {
+                canvas.width  = canvas.clientWidth  * devicePixelRatio;
+                canvas.height = canvas.clientHeight * devicePixelRatio;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            let nodes = [], springs = [], tris = [];
+
+            function buildMesh() {
+                nodes = []; springs = []; tris = [];
+                for (let r = 0; r < ROWS; r++) {
+                    for (let c = 0; c < COLS; c++) {
+                        const ox = (r % 2 === 1) ? 0.5 : 0;
+                        const bx = (c + ox) / (COLS - 1) - 0.5 + (Math.random() - .5) * JITTER;
+                        const by = r / (ROWS - 1) - 0.5         + (Math.random() - .5) * JITTER;
+                        const bz = (Math.random() - .5) * 0.02;
+                        nodes.push({ bx, by, bz, x: bx, y: by, z: bz, vx: 0, vy: 0, vz: 0 });
+                    }
+                }
+                const seen = new Set();
+                function addSpring(a, b) {
+                    const k = Math.min(a, b) + '_' + Math.max(a, b);
+                    if (seen.has(k)) return;
+                    seen.add(k);
+                    const na = nodes[a], nb = nodes[b];
+                    const dx = na.bx - nb.bx, dy = na.by - nb.by, dz = na.bz - nb.bz;
+                    springs.push({ a, b, rest: Math.sqrt(dx*dx + dy*dy + dz*dz) });
+                }
+                for (let r = 0; r < ROWS; r++) {
+                    for (let c = 0; c < COLS; c++) {
+                        const i = r * COLS + c, ox = (r % 2 === 1) ? 1 : 0;
+                        if (c + 1 < COLS) addSpring(i, r * COLS + c + 1);
+                        if (r + 1 < ROWS) {
+                            const d0 = (r+1)*COLS + (c+ox), d1 = (r+1)*COLS + (c+ox-1);
+                            if (c + ox     < COLS) addSpring(i, d0);
+                            if (c + ox - 1 >= 0)   addSpring(i, d1);
+                            if (c+1 < COLS && c+ox   < COLS) tris.push([i, r*COLS+c+1, d0]);
+                            if (c+ox < COLS && c+ox-1 >= 0)  tris.push([i, d0, d1]);
+                        }
+                    }
+                }
+            }
+            buildMesh();
+
+            function impulse() {
+                const n = nodes[Math.floor(Math.random() * nodes.length)];
+                const f = IMPULSE_STR * (0.8 + Math.random() * 1.5);
+                const a = Math.random() * Math.PI * 2;
+                const t = (Math.random() - .5) * Math.PI * 0.6;
+                n.vx += Math.cos(a) * Math.cos(t) * f;
+                n.vy += Math.sin(t) * f;
+                n.vz += Math.sin(a) * Math.cos(t) * f;
+            }
+            setInterval(impulse, IMPULSE_INT);
+            for (let i = 0; i < 5; i++) impulse();
+
+            const vsrc = `attribute vec3 aPos;uniform mat4 uMVP;void main(){gl_Position=uMVP*vec4(aPos,1.0);gl_PointSize=${NODE_SIZE.toFixed(1)};}`;
+            const fsFlat = `precision mediump float;uniform vec4 uColor;void main(){gl_FragColor=uColor;}`;
+            const fsDot  = `precision mediump float;uniform vec4 uColor;void main(){vec2 c=gl_PointCoord-0.5;if(dot(c,c)>0.25)discard;gl_FragColor=uColor;}`;
+
+            function mkShader(type, src) {
+                const s = gl.createShader(type);
+                gl.shaderSource(s, src); gl.compileShader(s); return s;
+            }
+            function mkProg(fs) {
+                const p = gl.createProgram();
+                gl.attachShader(p, mkShader(gl.VERTEX_SHADER, vsrc));
+                gl.attachShader(p, mkShader(gl.FRAGMENT_SHADER, fs));
+                gl.linkProgram(p); return p;
+            }
+
+            const flatProg = mkProg(fsFlat), dotProg = mkProg(fsDot);
+            const tBuf = gl.createBuffer(), eBuf = gl.createBuffer(), pBuf = gl.createBuffer();
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+            function mat4Mul(a, b) {
+                const o = new Float32Array(16);
+                for (let i=0;i<4;i++) for (let j=0;j<4;j++) for (let k=0;k<4;k++) o[j*4+i] += a[k*4+i] * b[j*4+k];
+                return o;
+            }
+            function perspective(fov, aspect, near, far) {
+                const f = 1 / Math.tan(fov / 2), m = new Float32Array(16);
+                m[0]=f/aspect; m[5]=f; m[10]=(far+near)/(near-far); m[11]=-1; m[14]=2*far*near/(near-far);
+                return m;
+            }
+            function rotX(a) { const m=new Float32Array(16),c=Math.cos(a),s=Math.sin(a); m[0]=m[15]=1; m[5]=m[10]=c; m[6]=s; m[9]=-s; return m; }
+            function rotY(a) { const m=new Float32Array(16),c=Math.cos(a),s=Math.sin(a); m[5]=m[15]=1; m[0]=m[10]=c; m[2]=-s; m[8]=s; return m; }
+            function translate(x,y,z) { const m=new Float32Array(16); m[0]=m[5]=m[10]=m[15]=1; m[12]=x; m[13]=y; m[14]=z; return m; }
+
+            const camTX = TILT_X * Math.PI / 180;
+            const camTY = TILT_Y * Math.PI / 180;
+            let mvp = new Float32Array(16);
+
+            function setAndDraw(prog, buf, data, mode, count, color) {
+                gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+                gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW);
+                gl.useProgram(prog);
+                const loc = gl.getAttribLocation(prog, 'aPos');
+                gl.enableVertexAttribArray(loc);
+                gl.vertexAttribPointer(loc, 3, gl.FLOAT, false, 0, 0);
+                gl.uniformMatrix4fv(gl.getUniformLocation(prog, 'uMVP'), false, mvp);
+                gl.uniform4fv(gl.getUniformLocation(prog, 'uColor'), color);
+                gl.drawArrays(mode, 0, count);
+            }
+
+            function frame() {
+                for (let step = 0; step < SUBSTEPS; step++) {
+                    springs.forEach(({ a, b, rest }) => {
+                        const na = nodes[a], nb = nodes[b];
+                        const dx = nb.x-na.x, dy = nb.y-na.y, dz = nb.z-na.z;
+                        const dist = Math.sqrt(dx*dx + dy*dy + dz*dz) || 0.0001;
+                        const force = (dist - rest) * STIFFNESS;
+                        const fx = dx/dist*force, fy = dy/dist*force, fz = dz/dist*force;
+                        const dt = 0.016 / SUBSTEPS;
+                        na.vx+=fx*dt; na.vy+=fy*dt; na.vz+=fz*dt;
+                        nb.vx-=fx*dt; nb.vy-=fy*dt; nb.vz-=fz*dt;
+                    });
+                    nodes.forEach(n => {
+                        n.vx*=DAMPING; n.vy*=DAMPING; n.vz*=DAMPING;
+                        n.x+=n.vx; n.y+=n.vy; n.z+=n.vz;
+                    });
+                }
+
+                const aspect = canvas.width / canvas.height;
+                const proj = perspective(0.85, aspect, 0.001, 100);
+                const view = mat4Mul(mat4Mul(translate(0, 0, -ZOOM), rotX(camTX)), rotY(camTY));
+                mvp = mat4Mul(proj, view);
+
+                gl.clearColor(0, 0, 0, 0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+
+                const td = new Float32Array(tris.length * 9);
+                tris.forEach(([a,b,c], i) => {
+                    td.set([nodes[a].x,nodes[a].y,nodes[a].z, nodes[b].x,nodes[b].y,nodes[b].z, nodes[c].x,nodes[c].y,nodes[c].z], i*9);
+                });
+                setAndDraw(flatProg, tBuf, td, gl.TRIANGLES, tris.length*3, TRI_COLOR);
+
+                const ed = new Float32Array(springs.length * 6);
+                springs.forEach(({ a, b }, i) => {
+                    ed.set([nodes[a].x,nodes[a].y,nodes[a].z, nodes[b].x,nodes[b].y,nodes[b].z], i*6);
+                });
+                setAndDraw(flatProg, eBuf, ed, gl.LINES, springs.length*2, LINE_COLOR);
+
+                const pd = new Float32Array(nodes.length * 3);
+                nodes.forEach((n, i) => { pd.set([n.x, n.y, n.z], i*3); });
+                setAndDraw(dotProg, pBuf, pd, gl.POINTS, nodes.length, NODE_COLOR);
+
+                requestAnimationFrame(frame);
+            }
+            frame();
+        })();
+        </script>
     </body>
 </html>
