@@ -1,7 +1,8 @@
 # col-m Drive files
 # Format: filename    GOOGLE_DRIVE_FILE_ID
 #
-# To get a file ID: right-click the file in Drive → "Get link"
+# To get a file ID: right-click the file in Drive → "Share with Google Drive"
+# Make the file public then get the ID in to this page.
 # The ID is the long string between /d/ and /view in the URL:
 #   https://drive.google.com/file/d/THIS_PART_HERE/view
 #
