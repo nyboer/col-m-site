@@ -8,6 +8,8 @@
 #
 # List events in the order you want them on the page (most recent first).
 # Each event needs one .txt file and one image file.
+sept-2026.txt https://drive.google.com/file/d/1Y-FdA_wJYXvd7dLb1mSmNpO4JtjUbBM1
+IG_Story.jpg https://drive.google.com/file/d/1gjl9E2ioZT2FPeASeyPR73yY_yk8hllr
 
 aug-2026.txt https://drive.google.com/file/d/1Dz1dQafS6RoG0nCYbFmwe2QcHsfZZn_2
 IG_post2.jpg https://drive.google.com/file/d/1eoAZyJwnYaS4Idk7T39c1h_f1F9CXuIl
