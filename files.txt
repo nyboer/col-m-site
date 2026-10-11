@@ -10,9 +10,10 @@
 # Each event needs one .txt file and one image file.
 
 oct-2026.txt https://drive.google.com/file/d/1JgTDwmWjksrpx6KuMn_sDYM8SQTz_XKn/view?usp=sharing
+IG_post3.jpg https://drive.google.com/file/d/1_j4p55enfq62DSHVGUDw1bijMWdbm1CZ
 
 sept-2026.txt https://drive.google.com/file/d/1Y-FdA_wJYXvd7dLb1mSmNpO4JtjUbBM1
-IG_post3.jpg https://drive.google.com/file/d/1_j4p55enfq62DSHVGUDw1bijMWdbm1CZ/view?usp=sharing
+IG_Story.jpg https://drive.google.com/open?id=1gjl9E2ioZT2FPeASeyPR73yY_yk8hllr
 
 aug-2026.txt https://drive.google.com/file/d/1Dz1dQafS6RoG0nCYbFmwe2QcHsfZZn_2
 IG_post2.jpg https://drive.google.com/file/d/1eoAZyJwnYaS4Idk7T39c1h_f1F9CXuIl
