@@ -9,7 +9,10 @@
 # List events in the order you want them on the page (most recent first).
 # Each event needs one .txt file and one image file.
 
-oct-2026.txt https://drive.google.com/file/d/1JgTDwmWjksrpx6KuMn_sDYM8SQTz_XKn/view?usp=sharing
+nov-2026.txt https://drive.google.com/file/d/1qBCEJvi-deyKon0u5KnK3YwFyngHBSGQ
+IG_post3.jpg https://drive.google.com/file/d/1gpmJ82TZAEk6JOsamb-UvyRMkaeQKriB
+
+oct-2026.txt https://drive.google.com/file/d/1JgTDwmWjksrpx6KuMn_sDYM8SQTz_XKn
 IG_post3.jpg https://drive.google.com/file/d/1_j4p55enfq62DSHVGUDw1bijMWdbm1CZ
 
 sept-2026.txt https://drive.google.com/file/d/1Y-FdA_wJYXvd7dLb1mSmNpO4JtjUbBM1
